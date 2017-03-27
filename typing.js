@@ -1,3 +1,156 @@
-var model = {};
-var presenter = {};
-var view = {};
+var model = {
+  wordLength : function(string){
+              var stringLength = 0;
+              var stringArray = string.trim().split(" ");
+                for(var i=0;i<stringArray.length;i++){
+                  if(stringArray[i] !=""){
+                    stringLength++;
+                  }
+                }
+              return stringLength;
+            },
+  calculateResult : function(typing,original,depressions,speed) {
+                    var diff = JsDiff["diffWords"](original, typing);
+                    console.log("Total Components : "+diff.length);
+                    var errorCount = 0;
+                    var insCount = 0;
+                    var normalCount = 0;
+                    var fragment = document.createDocumentFragment();
+                    for (var i=0; i < diff.length; i++) {
+                              if (diff[i].added && diff[i + 1] && diff[i + 1].removed) {
+                                    var swap = diff[i];
+                                    diff[i] = diff[i + 1];
+                                    diff[i + 1] = swap;
+                              }
+                              var node;
+                              if (diff[i].removed) {
+                                    node = document.createElement('del');
+                                    node.appendChild(document.createTextNode(diff[i].value));
+                                    console.log("Missing words "+diff[i].value+" Length "+wordLength(diff[i].value));
+                                    errorCount += wordLength(diff[i].value);
+
+                              } else if (diff[i].added) {
+                                    node = document.createElement('ins');
+                                    node.appendChild(document.createTextNode(diff[i].value));
+                                    insCount += wordLength(diff[i].value) ;
+
+                              } else {
+                                    node = document.createTextNode(diff[i].value);
+                                    normalCount += wordLength(diff[i].value);
+
+                              }
+                              fragment.appendChild(node);
+                    }
+                    console.log("Missing Words Count : "+errorCount);
+                    console.log("Extra words count : "+insCount);
+                    console.log("Correct Components : "+normalCount);
+                    presenter.updateResult(errorCount,insCount,normalCount);
+            }
+};
+var presenter = {
+    calculateResult : function(typing,original,depressions,speed){
+                      model.calculateResult(typing,original,depressions,speed);
+    },
+    updateResult : function(errorCount,insCount,normalCount,fragment){
+                   var accuracy = ((normalCount)/(errorCount+insCount+normalCount))*100;
+                   var error = ((errorCount+insCount)/(errorCount+insCount+normalCount))*100;
+                   var speed = Math.ceil((b.textContent.length/(900-clock.getTime().time))*900);
+                   console.log("Error Percentage : "+((errorCount+insCount)/(errorCount+insCount+normalCount))*100);
+                   console.log("Accuracy : "+((normalCount)/(errorCount+insCount+normalCount))*100);
+                   view.updateResult(accuracy,error,fragment,speed);
+    }
+};
+var view = {
+    init = function(){
+      $('#b').bind("cut copy paste",function(e) {
+           e.preventDefault();
+       });
+      var accuracyGaugeConfig = liquidFillGaugeDefaultSettings();
+          accuracyGaugeConfig.circleColor = "#2E7D32";
+          accuracyGaugeConfig.textColor = "#1B5E20";
+          accuracyGaugeConfig.waveTextColor = "#69F0AE";
+          accuracyGaugeConfig.waveColor = "#2E7D32";
+          accuracyGaugeConfig.waveAnimateTime = 2000;
+          accuracyGaugeConfig.waveCount = 1;
+          accuracyGaugeConfig.waveHeight = 0.15;
+          accuracyGauge = loadLiquidFillGauge("accuracy", 0, accuracyGaugeConfig);
+
+      var errorGaugeConfig = liquidFillGaugeDefaultSettings();
+          errorGaugeConfig.circleColor = "#BF360C";
+          errorGaugeConfig.textColor = "#BF360C";
+          errorGaugeConfig.waveTextColor = "#FF6E40";
+          errorGaugeConfig.waveColor = "#BF360C";
+          errorGaugeConfig.waveAnimateTime = 2000;
+          errorGaugeConfig.waveCount = 1;
+          errorGaugeConfig.waveHeight = 0.15;
+          errorGauge = loadLiquidFillGauge("error", 0, errorGaugeConfig);
+
+      var depressionsGaugeConfig = liquidFillGaugeDefaultSettings();
+          depressionsGaugeConfig.circleColor = "##0277BD";
+          depressionsGaugeConfig.textColor = "#0277BD";
+          depressionsGaugeConfig.waveTextColor = "#40C4FF";
+          depressionsGaugeConfig.waveColor = "#0277BD";
+          depressionsGaugeConfig.waveAnimateTime = 2000;
+          depressionsGaugeConfig.waveCount = 1;
+          depressionsGaugeConfig.waveHeight = 0.15;
+          depressionsGaugeConfig.displayPercent = false;
+          depressionsGauge = loadLiquidFillGauge("depressions", 0, depressionsGaugeConfig);
+
+      var speedGaugeConfig = liquidFillGaugeDefaultSettings();
+          speedGaugeConfig.circleColor = "#00695C";
+          speedGaugeConfig.textColor = "#00695C";
+          speedGaugeConfig.waveTextColor = "#64FFDA";
+          speedGaugeConfig.waveColor = "#00695C";
+          speedGaugeConfig.waveAnimateTime = 2000;
+          speedGaugeConfig.waveCount = 1;
+          speedGaugeConfig.waveHeight = 0.15;
+          speedGaugeConfig.displayPercent = false;
+          speedGauge = loadLiquidFillGauge("speed", 0, speedGaugeConfig);
+
+      var original = document.getElementById('a');
+      var typing = document.getElementById('b');
+      var result = document.getElementById('result');
+      totalTime = 900;
+
+      typing.addEventListener("keydown", startTest);
+      $(document).ready(function() {
+        clock = $('.clock').FlipClock(totalTime, {
+              clockFace: 'MinuteCounter',
+              countdown: true,
+              autoStart: false,
+              callbacks: {
+                start: function() {
+                  //$('.message').html('The clock has started!');
+                  document.getElementById("submitTest").disabled = false;
+                },
+                stop: function(){
+                  document.getElementById("submitTest").disabled = true;
+                  console.log("Elapsed Time "+(900-clock.getTime().time)+" seconds");
+                  console.log("Depressions : "+typing.textContent.length);
+                  depressionsGauge.update();
+                  var depressions = typing.textContent.length;
+                  var speed = Math.ceil((typing.textContent.length/(totalTime-clock.getTime().time))*totalTime);
+                  presenter.calculateResult(typing.textContent,original.textContent,depressions,speed);
+                }
+              }
+          });
+      });
+
+    },
+    updateResult : function(accuracy,error,fragment,speed){
+                  accuracyGauge.update(accuracy);
+                  errorGauge.update(error);
+                  speedGauge.update(speed)
+                  result.textContent = '';
+                  result.appendChild(fragment);
+    },
+    startTest : function(){
+              clock.start();
+    };
+    endTest : function(){
+              clock.stop();
+    },
+    resetTest : function(){
+              clock.setTime(totalTime);
+    }
+};
