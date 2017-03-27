@@ -10,7 +10,7 @@ var model = {
                   {
                       progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                       absoluteProgress = parseInt(progress)+"%";
-                      presenter.updateProgressBar(absoluteProgress);
+                      presenter.updateProgress(absoluteProgress);
                   },
                   function(error) {
                       presenter.registerError(error.message);
@@ -66,7 +66,8 @@ var presenter = {
                   }
                   else
                   {
-                      view.showLoading();
+                      console.log('Starting your registration, please fasten your seat belt');
+                      view.updateProgress(0);
                       model.register(name,contactNumber,rollNo,image);
                   }
       },
@@ -81,9 +82,9 @@ var presenter = {
                   window.location="main.html";
       },
 
-      updateProgressBar: function(progress){
+      updateProgress: function(progress){
                   console.log(progress);
-                  view.updateProgressBar(progress);
+                  view.updateProgress(progress);
       }
 
 };
