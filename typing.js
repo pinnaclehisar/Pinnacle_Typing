@@ -9,7 +9,7 @@ var model = {
                 }
               return stringLength;
             },
-  calculateResult : function(typing,original) {
+  calculateResult : function(typing,original,depressions,speed) {
                     var diff = JsDiff["diffWords"](original, typing);
                     console.log("Total Components : "+diff.length);
                     var errorCount = 0;
@@ -49,6 +49,7 @@ var model = {
 };
 var presenter = {
     calculateResult : function(typing,original,depressions,speed){
+                      view.showResult();
                       model.calculateResult(typing,original,depressions,speed);
     },
     updateResult : function(errorCount,insCount,normalCount,fragment,depressions,speed){
@@ -57,7 +58,8 @@ var presenter = {
 
                    console.log("Error Percentage : "+((errorCount+insCount)/(errorCount+insCount+normalCount))*100);
                    console.log("Accuracy : "+((normalCount)/(errorCount+insCount+normalCount))*100);
-                   view.updateResult(accuracy,error,fragment,speed);
+                   view.updateResult(accuracy,error,fragment,depressions,speed);
+
     }
 };
 var view = {
@@ -114,6 +116,11 @@ var view = {
       typing.innerHTML = '';
       var result = document.getElementById('result');
       typing.innerHTML = '';
+
+      practiceElem = document.getElementById('practice');
+      outputElem = document.getElementById('output');
+      practiceElem.style.display="block";
+      outputElem.style.display="none";
       totalTime = 900;
 
       typing.addEventListener("keydown", view.startTest);
@@ -129,7 +136,6 @@ var view = {
                 stop: function(){
 
                       document.getElementById("submitTest").disabled = true;
-
                   console.log("Elapsed Time "+(totalTime-clock.getTime().time)+" seconds");
                   console.log("Depressions : "+typing.textContent.length);
                   depressionsGauge.update();
@@ -143,6 +149,8 @@ var view = {
 
     },
     updateResult : function(accuracy,error,fragment,depressions,speed){
+                  console.log('Depressions : '+depressions);
+                  console.log('Speed : '+speed);
                   accuracyGauge.update(accuracy);
                   errorGauge.update(error);
                   depressionsGauge.update(depressions);
@@ -158,6 +166,10 @@ var view = {
     },
     resetTest : function(){
               clock.setTime(totalTime);
+    },
+    showResult : function(){
+                practiceElem.style.display="none";
+                outputElem.style.display="block";
     }
 };
 view.init();
