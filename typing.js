@@ -9,7 +9,7 @@ var model = {
                 }
               return stringLength;
             },
-  calculateResult : function(typing,original,depressions,speed) {
+  calculateResult : function(typing,original) {
                     var diff = JsDiff["diffWords"](original, typing);
                     console.log("Total Components : "+diff.length);
                     var errorCount = 0;
@@ -26,17 +26,17 @@ var model = {
                               if (diff[i].removed) {
                                     node = document.createElement('del');
                                     node.appendChild(document.createTextNode(diff[i].value));
-                                    console.log("Missing words "+diff[i].value+" Length "+wordLength(diff[i].value));
-                                    errorCount += wordLength(diff[i].value);
+                                    console.log("Missing words "+diff[i].value+" Length "+model.wordLength(diff[i].value));
+                                    errorCount += model.wordLength(diff[i].value);
 
                               } else if (diff[i].added) {
                                     node = document.createElement('ins');
                                     node.appendChild(document.createTextNode(diff[i].value));
-                                    insCount += wordLength(diff[i].value) ;
+                                    insCount += model.wordLength(diff[i].value) ;
 
                               } else {
                                     node = document.createTextNode(diff[i].value);
-                                    normalCount += wordLength(diff[i].value);
+                                    normalCount += model.wordLength(diff[i].value);
 
                               }
                               fragment.appendChild(node);
@@ -44,24 +44,24 @@ var model = {
                     console.log("Missing Words Count : "+errorCount);
                     console.log("Extra words count : "+insCount);
                     console.log("Correct Components : "+normalCount);
-                    presenter.updateResult(errorCount,insCount,normalCount);
+                    presenter.updateResult(errorCount,insCount,normalCount,fragment,depressions,speed);
             }
 };
 var presenter = {
     calculateResult : function(typing,original,depressions,speed){
                       model.calculateResult(typing,original,depressions,speed);
     },
-    updateResult : function(errorCount,insCount,normalCount,fragment){
+    updateResult : function(errorCount,insCount,normalCount,fragment,depressions,speed){
                    var accuracy = ((normalCount)/(errorCount+insCount+normalCount))*100;
                    var error = ((errorCount+insCount)/(errorCount+insCount+normalCount))*100;
-                   var speed = Math.ceil((b.textContent.length/(900-clock.getTime().time))*900);
+
                    console.log("Error Percentage : "+((errorCount+insCount)/(errorCount+insCount+normalCount))*100);
                    console.log("Accuracy : "+((normalCount)/(errorCount+insCount+normalCount))*100);
                    view.updateResult(accuracy,error,fragment,speed);
     }
 };
 var view = {
-    init = function(){
+    init : function(){
       $('#b').bind("cut copy paste",function(e) {
            e.preventDefault();
        });
@@ -107,12 +107,16 @@ var view = {
           speedGaugeConfig.displayPercent = false;
           speedGauge = loadLiquidFillGauge("speed", 0, speedGaugeConfig);
 
-      var original = document.getElementById('a');
-      var typing = document.getElementById('b');
+      var original = document.getElementById('original');
+      original.innerHTML = '';
+      original.innerHTML = sessionStorage.currentPassage;
+      var typing = document.getElementById('typing');
+      typing.innerHTML = '';
       var result = document.getElementById('result');
+      typing.innerHTML = '';
       totalTime = 900;
 
-      typing.addEventListener("keydown", startTest);
+      typing.addEventListener("keydown", view.startTest);
       $(document).ready(function() {
         clock = $('.clock').FlipClock(totalTime, {
               clockFace: 'MinuteCounter',
@@ -120,12 +124,13 @@ var view = {
               autoStart: false,
               callbacks: {
                 start: function() {
-                  //$('.message').html('The clock has started!');
-                  document.getElementById("submitTest").disabled = false;
+                      document.getElementById("submitTest").disabled = false;
                 },
                 stop: function(){
-                  document.getElementById("submitTest").disabled = true;
-                  console.log("Elapsed Time "+(900-clock.getTime().time)+" seconds");
+
+                      document.getElementById("submitTest").disabled = true;
+
+                  console.log("Elapsed Time "+(totalTime-clock.getTime().time)+" seconds");
                   console.log("Depressions : "+typing.textContent.length);
                   depressionsGauge.update();
                   var depressions = typing.textContent.length;
@@ -137,16 +142,17 @@ var view = {
       });
 
     },
-    updateResult : function(accuracy,error,fragment,speed){
+    updateResult : function(accuracy,error,fragment,depressions,speed){
                   accuracyGauge.update(accuracy);
                   errorGauge.update(error);
-                  speedGauge.update(speed)
+                  depressionsGauge.update(depressions);
+                  speedGauge.update(speed);
                   result.textContent = '';
                   result.appendChild(fragment);
     },
     startTest : function(){
               clock.start();
-    };
+    },
     endTest : function(){
               clock.stop();
     },
@@ -154,3 +160,4 @@ var view = {
               clock.setTime(totalTime);
     }
 };
+view.init();

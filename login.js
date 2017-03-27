@@ -87,4 +87,14 @@ var view = {
           errorElements.style.display = "none";
   }
 };
+firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+            console.log(user+' user logged in');
+            window.location = "main.html";
+        }
+        else{
+            console.log('Redirect user to login page');
+            window.location = 'index.html';
+        }
+});
 view.init();

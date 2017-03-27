@@ -28,6 +28,10 @@ var presenter = {
                     console.log("Passage is being appended : "+passage.Code);
                     view.showPassages();
                     view.appendPassage(passage);
+    },
+    passageClicked : function(passageString){
+                    sessionStorage.currentPassage = passageString;
+                    window.location = "typing.html";
     }
 };
 var view = {
@@ -64,6 +68,7 @@ var view = {
       return function()
       {
         console.log('Passage clicked'+arg);
+        presenter.passageClicked(arg);
         //redirect to typing page
         //document.getElementById('a').innerHTML = arg;
         //showTest();
