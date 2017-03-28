@@ -15,7 +15,7 @@ var model = {
                          .then(function(firebaseUser)
                           {
                                 console.log('Login successful'+firebaseUser.email);
-                                presenter.loginSuccess();
+                                presenter.loginSuccess(firebaseUser.email);
                           })
                          .catch(function(error) // Handle Errors here.
                          {
@@ -53,7 +53,8 @@ var presenter = {
     loginError    : function(error){
                           view.showError(error);
                   },
-    loginSuccess  : function(){
+    loginSuccess  : function(email){
+                          localStorage.setItem("email", email);
                           window.location = "main.html";
                   }
 
@@ -68,10 +69,14 @@ var view = {
            emailBox = document.getElementById('email');
            passwordBox = document.getElementById('password');
            loginButton = document.getElementById('loginButton');
+           loginForm = document.getElementById('loginForm');
 
-            loginButton.addEventListener('click', function(event) {
-                        presenter.login(emailBox.value,passwordBox.value);
-            });
+            loginForm.onsubmit = function(e){
+                      e.preventDefault();
+                      console.log(emailBox.value);
+                      presenter.login(emailBox.value,passwordBox.value);
+                      return false;
+            };
 
   },
   showError  : function(error){
@@ -93,8 +98,7 @@ firebase.auth().onAuthStateChanged(function(user){
             window.location = "main.html";
         }
         else{
-            console.log('Redirect user to login page');
-            window.location = 'index.html';
+            console.log('Sign in with your user email and password');
         }
 });
 view.init();

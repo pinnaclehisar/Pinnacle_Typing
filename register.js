@@ -36,7 +36,7 @@ var model = {
                       //Need to update the user if push not successful
                   });
                 }
-        };
+        
 };
 var presenter = {
   register  : function(name,contactNumber,rollNo,image,validContactNo){
@@ -85,7 +85,12 @@ var presenter = {
       updateProgress: function(progress){
                   console.log(progress);
                   view.updateProgress(progress);
+      },
+      getCurrentUser : function(){
+                       console.log('Current user is : '+getCurrentUser());
+                       view.setHeaderEmail(getCurrentUser());
       }
+
 
 };
 var view = {
@@ -95,7 +100,7 @@ var view = {
                 loadingElement = document.getElementById('loading');
                 progressElement = document.getElementById('progressBar');
 
-                logoutButtonElement = document.getElementById('quickstart-sign-in');
+                logoutButtonElement = document.getElementById('signout');
                 userEmailElement = document.getElementById('user_email');
                 nameBox = document.getElementById('name');
                 contactNumberBox = document.getElementById('contactNumber');
@@ -103,6 +108,14 @@ var view = {
                 imageBox = document.getElementById("image");
                 registerButton = document.getElementById('registerButton');
                 validContactNo = /^[0-9]+$/;
+
+                headerUserElem = document.getElementById('user_email');
+                logOutButton = document.getElementById('signout');
+                logOutButton.addEventListener('click',function(){
+                                  presenter.logout();
+                });
+                presenter.getCurrentUser();
+
 
                 registerButton.addEventListener('click',function(){
                         presenter.register(nameBox.value,contactNumberBox.value,
@@ -112,7 +125,7 @@ var view = {
                 logoutButtonElement.addEventListener('click',function(){
                           logout();
                 });
-       }
+       },
        showError  : function(error){
                   registrationDiv.style.display = "block";
                   errorElements.innerHTML = error;
@@ -127,6 +140,10 @@ var view = {
                     loadingElement.style.display = "block";
                     registrationDiv.style.display ="none";
                     errorElements.style.display = "none";
-              }
+          },
+      setHeaderEmail : function(email){
+                    headerUserElem.innerText = email;
+          }
+
 };
 view.init();

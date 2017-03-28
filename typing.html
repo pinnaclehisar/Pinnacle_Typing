@@ -123,7 +123,7 @@
     			height: 100%;
     			vertical-align: middle;
 				}
-				#quickstart-sign-in{
+				#signout{
 					float: right;
 					font-family: 'Nunito', sans-serif;
 					color: #FFF;
@@ -135,7 +135,7 @@
 					background-color: Transparent;
 				}
 
-				#quickstart-sign-in:hover {
+				#signout:hover {
 					cursor: pointer;
 					color: #00BFA5;
 					background-color: #FFF;
@@ -152,9 +152,12 @@
 				  -webkit-animation: spin 2s linear infinite;
 				  animation: spin 2s linear infinite;
 				}
-				#b{
+				#typing{
 					height:200px;
 				}
+        #original{
+          font-family: "Times New Roman", Georgia,serif;
+        }
 
 				#schedule a
 				{
@@ -185,10 +188,6 @@
 					padding: 8px;
 					padding-left: 34px;
 					padding-right: 36px;
-				}
-				td#a
-				{
-					font-family: "Times New Roman", Georgia, Serif;
 				}
 
 				#inst a:hover, #ins a:hover
@@ -255,10 +254,20 @@
 
 <body>
 
+  <div class="container" style="background-color:#00BFA5;font-family: 'Nunito', sans-serif;width:100%; margin:autoStart">
+	    <div class="row">
+		        <span id="user_email"></span>
+	          <button type="button" id="signout">Log Out</button> <br>
+	    </div>
+	</div>
+
+
         <div id="practice" style="width:100%" >
         		  <div id="practice_data">
-                  	        <div id="previousButton" onclick="showPassage()">
-                                  <span class="previousPageText">Go to Previous Page</span>
+                  	        <div id="previousButton">
+                                  <a href="main.html">
+                                      <span class="previousPageText">Go to Previous Page</span>
+                                  </a>
                             </div>
                   					<div class="row" style="max-width:100%">
                   							<div class="col-md-12 starttypingtext">
@@ -325,18 +334,20 @@
                     </tbody>
             </table>
         		<center>
-        			     <span class="practiceButton" onClick="showPassage()">Next Test</span>
+                <a href="main.html">
+        			     <span class="practiceButton">
+                     Next Test
+                   </span>
+                </a>
         		</center>
         </div>
 </body>
 <script>
 
 			$(document).ready(function(){
-//				$("#passages").hide();
-				    //$("div.clock").hide();
-					$("td#a").hide();
+					$("td#original").hide();
 			    $("button#showhide").click(function(){
-			    $("td#a").toggle();
+			    $("td#original").toggle();
 			    });
 			});
 
@@ -351,4 +362,5 @@ function showPassages()
 }
 </script>
 <script src="config.js"></script>
+<script src="common.js"></script>
 <script src="typing.js"></script>

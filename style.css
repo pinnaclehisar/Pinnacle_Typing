@@ -52,8 +52,12 @@ ins {
 }
 #settings label {
 	margin-left: 1em;
+}a{
+	text-decoration: none !important;
 }
-
+a:hover{
+	text-decoration: none !important;
+}
 .source {
 	position: absolute;
 	right: 1%;

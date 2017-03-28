@@ -59,7 +59,13 @@ var presenter = {
                    console.log("Error Percentage : "+((errorCount+insCount)/(errorCount+insCount+normalCount))*100);
                    console.log("Accuracy : "+((normalCount)/(errorCount+insCount+normalCount))*100);
                    view.updateResult(accuracy,error,fragment,depressions,speed);
-
+    },
+    logout : function(){
+                    logout();
+    },
+    getCurrentUser : function(){
+                     console.log('Current user is : '+getCurrentUser());
+                     view.setHeaderEmail(getCurrentUser());
     }
 };
 var view = {
@@ -108,6 +114,15 @@ var view = {
           speedGaugeConfig.waveHeight = 0.15;
           speedGaugeConfig.displayPercent = false;
           speedGauge = loadLiquidFillGauge("speed", 0, speedGaugeConfig);
+
+
+      headerUserElem = document.getElementById('user_email');
+      logOutButton = document.getElementById('signout');
+      logOutButton.addEventListener('click',function(){
+                        presenter.logout();
+      });
+      presenter.getCurrentUser();
+
 
       var original = document.getElementById('original');
       original.innerHTML = '';
@@ -170,6 +185,9 @@ var view = {
     showResult : function(){
                 practiceElem.style.display="none";
                 outputElem.style.display="block";
+    },
+    setHeaderEmail : function(email){
+          headerUserElem.innerText = email;
     }
 };
 view.init();

@@ -30,7 +30,7 @@
 					overflow: hidden;
 					text-overflow: ellipsis;
 				}
-				.practiceButton:hover{
+	/*			.practiceButton:hover{
 					cursor: pointer;
 					color: #FFF;
 					background-color: #00BFA5;
@@ -65,26 +65,6 @@
 				}
 
 
-				.showhideButton
-				{
-					font-family: 'Nunito', sans-serif;
-					color: #00BFA5;
-					border:1px solid;
-					font-size: 25px;
-					margin-top:30px;
-					border-color: #00BFA5;
-					background-color: Transparent;
-					padding: 5px;
-				}
-
-				.showhideButton:hover
-				{
-					font-family: 'Nunito', sans-serif;
-					color: #FFF;
-					background-color: #00BFA5;
-					padding: 5px;
-				}
-
 				.starttypingtext
 				{
 			    font-family: 'Nunito', sans-serif;
@@ -103,17 +83,16 @@
 					border-color: #F44336;
 					background-color: Transparent;
 					padding: 5px;
-				}
+				}*/
 			  #user_email{
 					font-family: 'Nunito', sans-serif;
 					color: #FFF;
 					font-size: 25px;
 					padding: 15px;
 					display: inline-block;
-    			height: 100%;
     			vertical-align: middle;
 				}
-				#quickstart-sign-in{
+				#signout{
 					float: right;
 					font-family: 'Nunito', sans-serif;
 					color: #FFF;
@@ -125,7 +104,7 @@
 					background-color: Transparent;
 				}
 
-				#quickstart-sign-in:hover {
+				#signout:hover {
 					cursor: pointer;
 					color: #00BFA5;
 					background-color: #FFF;
@@ -142,11 +121,8 @@
 				  -webkit-animation: spin 2s linear infinite;
 				  animation: spin 2s linear infinite;
 				}
-				#b{
-					height:200px;
-				}
 
-				#schedule a
+			/*	#schedule a
 				{
 					font-family: 'Nunito', sans-serif;
 					color: #000;
@@ -176,61 +152,7 @@
 					padding-left: 34px;
 					padding-right: 36px;
 				}
-				td#a
-				{
-					font-family: "Times New Roman", Georgia, Serif;
-				}
-
-				#inst a:hover, #ins a:hover
-				{
-					color: #FFF;
-					text-decoration: none;
-					background-color: #00BFA5;
-					cursor: pointer;
-				}
-
-				#softwarelink
-				{
-					font-family: 'Nunito', sans-serif;
-					color: #000;
-					font-size: 25px;
-					padding: 15px;
-					height: auto;
-					text-align: center;
-				}
-				#softwarelink:hover
-				{
-					color: #00BFA5;
-					text-decoration: none;
-					cursor: pointer;
-				}
-				#previousButton
-				{
-					font-family: 'Nunito', sans-serif;
-    			border: 1px solid;
-    			margin: 10px;
-    			font-size: 25px;
-    			border-color: #FFF;
-    			padding: 10px;
-				}
-				.previousPageText
-				{
-					font-family: 'Nunito', sans-serif;
-					color: #00BFA5;
-					border: 1px solid;
-					margin: 10px;
-					font-size: 25px;
-					padding: 10px;
-					background-color: Transparent;
-				}
-				.previousPageText:hover
-				{
-					font-family: 'Nunito', sans-serif;
-					color: #FFF;
-					cursor: pointer;
-					background-color: #00BFA5;
-				}
-
+*/
 
 				@-webkit-keyframes spin {
 				  0% { -webkit-transform: rotate(0deg); }
@@ -244,11 +166,20 @@
     </style>
 </head>
 <body>
+
+	<div class="container" style="background-color:#00BFA5;font-family: 'Nunito', sans-serif;width:100%; margin:autoStart">
+	    <div class="row">
+		        <span id="user_email"></span>
+	          <button type="button" id="signout">Log Out</button> <br>
+	    </div>
+	</div>
+
         <div id="navigation" style="width:100%">
               	<div class="loader" id="loaderPassage"></div>
               	<div id="passages"></div>
         </div>
 <script src="config.js"></script>
+<script src="common.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

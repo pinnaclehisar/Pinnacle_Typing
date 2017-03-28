@@ -32,13 +32,25 @@ var presenter = {
     passageClicked : function(passageString){
                     sessionStorage.currentPassage = passageString;
                     window.location = "typing.html";
+    },
+    logout : function(){
+                    logout();
+    },
+    getCurrentUser : function(){
+                     console.log('Current user is : '+getCurrentUser());
+                     view.setHeaderEmail(getCurrentUser());
     }
 };
 var view = {
     init : function(){
             passagesElement = document.getElementById('passages');
             passageLoaderElem = document.getElementById('loaderPassage');
-
+            headerUserElem = document.getElementById('user_email');
+            logOutButton = document.getElementById('signout');
+            logOutButton.addEventListener('click',function(){
+                          presenter.logout();
+            });
+            presenter.getCurrentUser();
             presenter.fetchPassages();
     },
     appendPassage : function(passage){
@@ -73,6 +85,9 @@ var view = {
         //document.getElementById('a').innerHTML = arg;
         //showTest();
       } ;
+    },
+    setHeaderEmail : function(email){
+          headerUserElem.innerText = email;
     }
 };
 
