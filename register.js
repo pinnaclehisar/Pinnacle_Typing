@@ -1,3 +1,42 @@
+
+var getCurrentUser = function(){
+      console.log('currentUser :'+localStorage.getItem('email'));
+      return localStorage.getItem('email');
+}
+var logout = function(){
+    console.log('User : '+firebase.auth().currentUser.email);
+    firebase.auth().signOut();
+    console.log('Successfully logged out');
+}
+
+var isRegistered = function(uid) //function to check user is registered or not only after login
+{
+    var database=firebase.database();
+    var users = database.ref('Users').orderByKey().equalTo(uid);
+    var match=false;
+    users.on('value',function(snapshot){
+      snapshot.forEach(function(childSnapshot)   //To fetch all user_id(key values) under users
+      {
+          console.log(childSnapshot.val().email+ ' is successfully registered');
+          presenter.registerSuccess();
+      });
+    }
+  );
+}
+
+firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+            //sessionStorage.email = user.email;
+            console.log(user.email+' user logged in');
+            isRegistered(user.uid);
+        }
+        else{
+            console.log('Redirect user to login page');
+            localStorage.removeItem('email');
+            window.location = 'index.html';
+        }
+});
+
 var model = {
   register : function(name,contactNumber,rollNo,image){
                   var user = firebase.auth().currentUser;
@@ -36,7 +75,7 @@ var model = {
                       //Need to update the user if push not successful
                   });
                 }
-        
+
 };
 var presenter = {
   register  : function(name,contactNumber,rollNo,image,validContactNo){
@@ -109,6 +148,7 @@ var view = {
                 registerButton = document.getElementById('registerButton');
                 validContactNo = /^[0-9]+$/;
 
+                loadingElement.style.display = 'none';
                 headerUserElem = document.getElementById('user_email');
                 logOutButton = document.getElementById('signout');
                 logOutButton.addEventListener('click',function(){

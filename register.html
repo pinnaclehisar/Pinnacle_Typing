@@ -178,6 +178,34 @@ input{
 {
   width: 50%;
 }
+.welcome_strip
+{
+	text-align: center;
+	font-family: 'Nunito', sans-serif;
+	color: #00BFA5;
+  font-size: 58px;
+	margin: 0 auto;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #00BFA5;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  margin-top: 200px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 </style>
 
@@ -195,11 +223,13 @@ input{
 	    </div>
 	</div>
 
-<center><img src="loading.gif" id="loading"></center>
+<div class="loader" id="loading"></div>
 
 <div id="registrationDiv">
 
     <div class="container">
+
+        <div class="row formatting"> <center><span class="welcome_strip">Kindly fill this registration form </span></center> </div> <br><br>
 
         <div class="row"> <center> <input type="text" name="name" id="name" placeholder="Enter your name" required> </center> </div> <br><br>
 
@@ -227,32 +257,7 @@ input{
 
 
   <script src="config.js"></script>
-	<script src="common.js"></script>
 	<script src="register.js"></script>
-
-
-
-<!--<script>
-
-document.getElementById('progress').style.display="none";
-
-var inputElement=document.getElementById("submitDetails");
-
-inputElement.addEventListener('click', function(){
-
-var user_id = document.getElementById("user_id").innerText;
-
-var user_email=document.getElementById("user_email").innerText;
-    push_users_info_error(user_id,user_email);
-});
-
-
-
-  </script> -->
-
-
-
-
 
 <script>
 
