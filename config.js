@@ -1,10 +1,10 @@
 
 var config = {
-  apiKey: "AIzaSyBXmt_HuSOO7Nh62QgaSlguVIZLBaaEcPk",
-  authDomain: "typingtest-18077.firebaseapp.com",
-  databaseURL: "https://typingtest-18077.firebaseio.com",
-  storageBucket: "typingtest-18077.appspot.com",
-  messagingSenderId: "864003751108"
+    apiKey: "AIzaSyA0f5gr0F8SaarZbG9QAv3UHobiR5Jvtm4",
+    authDomain: "pinnacle-typing.firebaseapp.com",
+    databaseURL: "https://pinnacle-typing.firebaseio.com",
+    storageBucket: "pinnacle-typing.appspot.com",
+    messagingSenderId: "1060607824469"
 };
 /*
 var config = {
